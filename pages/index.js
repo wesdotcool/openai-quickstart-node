@@ -5,6 +5,7 @@ import styles from "./index.module.css";
 export default function Home() {
     const [animalInput, setAnimalInput] = useState("");
     const [result, setResult] = useState();
+    const [response, setResponse] = useState();
 
     async function onSubmit(event) {
         event.preventDefault();
@@ -23,6 +24,7 @@ export default function Home() {
             }
 
             setResult(data.result);
+            setResponse(data);
             setAnimalInput("");
         } catch(error) {
             // Consider implementing your own error handling logic here
@@ -51,8 +53,23 @@ export default function Home() {
               />
               <input type="submit" value="Generate names" />
             </form>
-            <div className={styles.result}>{result}</div>
+            {resultDiv(response)}
           </main>
         </div>
     );
+}
+
+// Gives you text or an img depending on the response
+function resultDiv(response) {
+    if (response == null) {
+        return <div/>
+    }
+    if (response.result !== undefined) {
+        return <div className={styles.result}>{response.result}</div>
+    } else if (response.url !== undefined) {
+        // Assume it's an image
+        return <div className={styles.image}><img src={response.url} alt="Your image"/></div>
+    } else {
+        return <div/>
+    }
 }
