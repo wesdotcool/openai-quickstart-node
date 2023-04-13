@@ -52,13 +52,15 @@
     color: #8e8ea0;
     opacity: 1;
 }
-.main input[type="submit"] {
+.main .submit {
     padding: 12px 0;
     color: #fff;
-    background-color: #10a37f;
     border: none;
     border-radius: 4px;
     text-align: center;
+}
+.main .active {
+    background-color: #10a37f;
     cursor: pointer;
 }
 .main .result {
@@ -67,4 +69,8 @@
 }
 .main .image {
     padding-top: 20px;
+}
+.disabled {
+    background: gray;
+    cursor: wait;
 }
