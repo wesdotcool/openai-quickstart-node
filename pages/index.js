@@ -39,24 +39,26 @@ export default function Home() {
         setThinking(true)
         const response = await fetch("/api/caption", {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: {
+                "Content-Type": "application/json",
+            },
             body: JSON.stringify({ url: imageUrl }),
         });
 
-        const data = await response.json();
         if (response.status !== 200) {
-            throw data.error || new Error(`Request failed with status ${response.status}`);
+            throw new Error(`Request failed with status ${response.status}`);
         }
+        const data = await response.json();
         setThinking(false)
 
-        return data
+        return data;
     }
     
     async function onSubmit(event) {
         event.preventDefault();
         if (!thinking) {
             try {
-                var data = generate(animalInput)
+                var data = await generate(animalInput)
                 data.key = 0
                 setResults([data]);
             } catch(error) {
@@ -71,14 +73,14 @@ export default function Home() {
         return results.length % 2 == 0
     }
 
-    function nextAction() {
+    async function nextAction() {
         console.log("ran next action")
         var last = results[results.length - 1]
+        console.log(last)
         if (draw()) {
-            addResult(generate(last.result))
-            
+            addResult(await generate(last.caption))
         } else {
-            addResult(caption(last.url))
+            addResult(await caption(last.url))
         }
     }
 
@@ -86,15 +88,15 @@ export default function Home() {
         if (results.length == 0) {
             return null
         }
-        return <button onClick={nextAction}>{draw() ? "Draw!" : "Caption!"}</button>
+        return <button onClick={nextAction}>{draw() ? "Draw that caption!" : "Caption that picture!"}</button>
     }
 
     // Gives you text or an img depending on the response
     function resultsDivs() {
         return results.map(function (entry) {
-            if (entry.result !== undefined) {
+            if (entry.caption !== undefined) {
                 // It's text
-                return <div className={styles.result} key={entry.key}>{entry.result}</div>
+                return <div className={styles.caption} key={entry.key}>{entry.caption}</div>
             } else if (entry.url !== undefined) {
                 // It's an image
                 return <div className={styles.image} key={entry.key}><img src={entry.url} alt="Your image"/></div>
@@ -113,7 +115,7 @@ export default function Home() {
 
           <main className={styles.main}>
             <img src="/dog.png" className={styles.icon} />
-            <h3>Name my pet</h3>
+            <h3>AI Telestrations</h3>
             <form onSubmit={onSubmit}>
               <input
                 type="text"
@@ -122,7 +124,7 @@ export default function Home() {
                 value={animalInput}
                 onChange={(e) => setAnimalInput(e.target.value)}
               />
-              <input className={ `${styles.submit} ${thinking ? styles.disabled : styles.active}` } type="submit" value="Generate names" />
+              <input className={ `${styles.submit} ${thinking ? styles.disabled : styles.active}` } type="submit" value="Generate First Picture" />
             </form>
             { resultsDivs() }
             { captionOrDrawButton(results) }

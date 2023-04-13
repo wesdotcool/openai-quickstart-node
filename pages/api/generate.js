@@ -29,15 +29,15 @@ export default async function (req, res) {
     console.log("input valid")
 
     try {
-        var testUrl = "https://m.media-amazon.com/images/I/81m4XrsrbaL._CR0,204,1224,1224_UX256.jpg"
-        res.status(200).json({ url: testUrl });
-        console.log("set result")
-        // const response = await openai.createImage({
-        //     prompt: inputPrompt,
-        //     n: 1,
-        //     size: "256x256",
-        // });
-        // res.status(200).json({ url: response.data.data[0].url });
+        // var testUrl = "https://m.media-amazon.com/images/I/81m4XrsrbaL._CR0,204,1224,1224_UX256.jpg"
+        // res.status(200).json({ url: testUrl });
+
+        const response = await openai.createImage({
+            prompt: inputPrompt,
+            n: 1,
+            size: "256x256",
+        });
+        res.status(200).json({ url: response.data.data[0].url });
 
         // const completion = await openai.createCompletion({
         //     model: "text-davinci-003",

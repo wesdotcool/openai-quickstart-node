@@ -63,9 +63,9 @@
     background-color: #10a37f;
     cursor: pointer;
 }
-.main .result {
+.main .caption {
     font-weight: bold;
-    margin-top: 40px;
+    margin-bottom: 40px;
 }
 .main .image {
     padding-top: 20px;
