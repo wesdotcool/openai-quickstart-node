@@ -29,22 +29,28 @@ export default async function (req, res) {
     console.log("input valid")
 
     try {
-        // var testUrl = "https://m.media-amazon.com/images/I/81m4XrsrbaL._CR0,204,1224,1224_UX256.jpg"
-        // res.status(200).json({ url: testUrl });
+        if (process.env.USE_DALLE) {
+            // Draw an image with openai
+            // This costs me about 2 cents per API call
+            const response = await openai.createImage({
+                prompt: inputPrompt,
+                n: 1,
+                size: "256x256",
+            });
+            res.status(200).json({ url: response.data.data[0].url });
 
-        const response = await openai.createImage({
-            prompt: inputPrompt,
-            n: 1,
-            size: "256x256",
-        });
-        res.status(200).json({ url: response.data.data[0].url });
-
-        // const completion = await openai.createCompletion({
-        //     model: "text-davinci-003",
-        //     prompt: generatePrompt(inputPrompt),
-        //     temperature: 0.6,
-        // });
-        // res.status(200).json({ result: completion.data.choices[0].text });
+            const completion = await openai.createCompletion({
+                model: "text-davinci-003",
+                prompt: generatePrompt(inputPrompt),
+                temperature: 0.6,
+            });
+            res.status(200).json({ result: completion.data.choices[0].text });
+        } else {
+            // This is a test picture of a dog peeing on a fire hydrant
+            // This costs me about 0 cents per API call
+            var testUrl = "https://m.media-amazon.com/images/I/81m4XrsrbaL._CR0,204,1224,1224_UX256.jpg"
+            res.status(200).json({ url: testUrl });
+        }
     } catch(error) {
         // Consider adjusting the error handling logic for your use case
         if (error.response) {
