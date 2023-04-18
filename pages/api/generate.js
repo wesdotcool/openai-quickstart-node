@@ -29,7 +29,7 @@ export default async function (req, res) {
     console.log("input valid")
 
     try {
-        if (process.env.USE_DALLE) {
+        if (process.env.USE_DALLE == "true") {
             // Draw an image with openai
             // This costs me about 2 cents per API call
             const response = await openai.createImage({
