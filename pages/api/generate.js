@@ -6,8 +6,7 @@ const configuration = new Configuration({
 const openai = new OpenAIApi(configuration);
 
 export default async function (req, res) {
-    console.log("called func")
-    if (!configuration.apiKey) {
+    if (process.env.USE_DALLE == "true" && !configuration.apiKey) {
         res.status(500).json({
             error: {
                 message: "OpenAI API key not configured, please follow instructions in README.md",
@@ -15,7 +14,6 @@ export default async function (req, res) {
         });
         return;
     }
-    console.log("key valid")
 
     const inputPrompt = req.body.animal || '';
     if (inputPrompt.trim().length === 0) {
@@ -26,7 +24,6 @@ export default async function (req, res) {
         });
         return;
     }
-    console.log("input valid")
 
     try {
         if (process.env.USE_DALLE == "true") {

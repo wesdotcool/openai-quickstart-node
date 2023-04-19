@@ -74,9 +74,7 @@ export default function Home() {
     }
 
     async function nextAction() {
-        console.log("ran next action")
         var last = results[results.length - 1]
-        console.log(last)
         if (draw()) {
             addResult(await generate(last.caption))
         } else {

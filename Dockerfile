@@ -2,7 +2,9 @@
 
 FROM node:19-alpine
 WORKDIR /app
+ENV NODE_ENV=production
 COPY package.json package-lock.json .
-RUN npm install
+RUN npm ci
 COPY . .
-CMD ["npm", "run", "dev"]
+RUN npm run build
+CMD ["npm", "start"]

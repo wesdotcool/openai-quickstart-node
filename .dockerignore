@@ -1,2 +1,12 @@
 node_modules
 build
+.env
+.DS_Store
+.env.example
+.git
+.github
+.gitignore
+.next
+Dockerfile
+.dockerignore
+README.md
